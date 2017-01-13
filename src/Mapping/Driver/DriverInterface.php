@@ -1,5 +1,4 @@
 <?php
-
 namespace InformikaClickHouse\Mapping\Driver;
 
 /**

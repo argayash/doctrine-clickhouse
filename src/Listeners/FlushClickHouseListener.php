@@ -1,7 +1,6 @@
 <?php
 namespace InformikaClickHouse\Listeners;
 
-
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use InformikaClickHouse\ChOperations\ChInsertOperation;
 use InformikaClickHouse\Exception\AnnotationReaderException;
@@ -10,6 +9,10 @@ use InformikaClickHouse\Mapping\Annotation\Column;
 use InformikaClickHouse\Mapping\ClassMetadataFactory;
 use InformikaClickHouse\Mapping\ClassMetadata;
 
+/**
+ * Class FlushClickHouseListener
+ * @package InformikaClickHouse\Listeners
+ */
 class FlushClickHouseListener
 {
     /** @var ClassMetadata[] */
@@ -21,6 +24,11 @@ class FlushClickHouseListener
     /** @var  ClickHouseClientManager */
     private $clickHouseClientManager;
 
+    /**
+     * FlushClickHouseListener constructor.
+     * @param ClassMetadataFactory $classMetadataFactory
+     * @param ClickHouseClientManager $clickHouseClientManager
+     */
     public function __construct(ClassMetadataFactory $classMetadataFactory, ClickHouseClientManager $clickHouseClientManager)
     {
         $this->setClassMetadataFactory($classMetadataFactory);
@@ -89,7 +97,11 @@ class FlushClickHouseListener
         }
     }
 
-
+    /**
+     * @param $entity
+     * @param ClassMetadataFactory $chMetadata
+     * @return ClassMetadata
+     */
     public function getEntityAnnotations($entity, ClassMetadataFactory $chMetadata)
     {
         $className = get_class($entity);
