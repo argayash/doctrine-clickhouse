@@ -1,7 +1,7 @@
 {
-    "name": "argayash/doctrine-clickhouse",
+    "name": "Informika/doctrine-clickhouse",
     "description": "",
-    "homepage": "http://yandex.ru",
+    "homepage": "http://informikaservice.ru",
     "keywords": ["clickhouse"],
     "minimum-stability": "dev",
     "license": "MIT",
@@ -16,9 +16,9 @@
     },
     "authors": [
         {
-            "name": "Informika",
-            "email": "informika@service.com",
-            "homepage": "http://yandex.ru/asd"
+            "name": "MIP Informika",
+            "email": "info@informikaservice.ru",
+            "homepage": "http://informikaservice.ru"
         }
     ],
     "autoload": {
