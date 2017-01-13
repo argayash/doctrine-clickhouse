@@ -34,21 +34,21 @@ class Column
     public $length;
 
     /** @var  string */
-    private $property;
+    private $propertyName;
 
     /**
      * @return string
      */
-    public function getProperty(): string
+    public function getPropertyName(): string
     {
-        return $this->property;
+        return $this->propertyName;
     }
 
     /**
-     * @param string $property
+     * @param string $propertyName
      */
-    public function setProperty(string $property)
+    public function setPropertyName(string $propertyName)
     {
-        $this->property = $property;
+        $this->propertyName = $propertyName;
     }
 }

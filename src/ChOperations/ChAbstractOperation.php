@@ -3,34 +3,46 @@ namespace InformikaClickHouse\ChOperations;
 
 
 use ClickHouseDB\Client;
+use InformikaClickHouse\Mapping\Annotation\Column;
+use InformikaClickHouse\Mapping\Annotation\Table;
 
 abstract class ChAbstractOperation
 {
     /** @var  string */
     protected $name;
-    /** @var  string */
+    /** @var  Table */
     protected $table;
     /** @var array */
     protected $rows = [];
-    /** @var array */
+    /** @var Column[] */
     protected $columns = [];
 
     /** @var  Client */
     private $chClient;
 
+    /**
+     * ChAbstractOperation constructor.
+     * @param Client $client
+     */
     public function __construct(Client $client)
     {
         $this->setChClient($client);
     }
 
+    /**
+     * @return bool
+     */
     abstract public function prepare();
 
+    /**
+     * @return bool
+     */
     abstract public function execute();
 
     /**
-     * @param string $column
+     * @param Column $column
      */
-    public function addColumn(string $column)
+    public function addColumn(Column $column)
     {
         $this->columns[] = $column;
     }
@@ -60,17 +72,17 @@ abstract class ChAbstractOperation
     }
 
     /**
-     * @return string
+     * @return Table
      */
-    public function getTable(): string
+    public function getTable(): Table
     {
         return $this->table;
     }
 
     /**
-     * @param string $table
+     * @param Table $table
      */
-    public function setTable(string $table)
+    public function setTable(Table $table)
     {
         $this->table = $table;
     }

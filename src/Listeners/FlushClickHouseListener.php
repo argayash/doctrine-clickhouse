@@ -3,6 +3,7 @@ namespace InformikaClickHouse\Listeners;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use InformikaClickHouse\ChOperations\ChInsertOperation;
+use InformikaClickHouse\ChRows\ChBaseRow;
 use InformikaClickHouse\Exception\AnnotationReaderException;
 use InformikaClickHouse\Managers\ClickHouseClientManager;
 use InformikaClickHouse\Mapping\Annotation\Column;
@@ -55,13 +56,14 @@ class FlushClickHouseListener
                 $chTableName = $chMetadata->getTable()->name;
                 if (!isset($chInsertOperations[$chTableName])) {
                     $chInsertOperation = new ChInsertOperation($chClient);
-                    $chInsertOperation->setTable($chTableName);
+                    $chInsertOperation->setTable($chMetadata->getTable());
                     $chInsertOperations[$chTableName] = $chInsertOperation;
                 } else {
                     /** @var ChInsertOperation $chInsertOperation */
                     $chInsertOperation = $chInsertOperations[$chTableName];
                 }
                 $entityData = $uow->getOriginalEntityData($entity);
+                $chInsertRow = new ChBaseRow();
                 $row = [];
                 $columns = [];
                 /** @var Column $column */
