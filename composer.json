@@ -1,0 +1,29 @@
+{
+    "name": "argayash/doctrine-clickhouse",
+    "description": "",
+    "homepage": "http://yandex.ru",
+    "keywords": ["clickhouse"],
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": ">=5.2.4",
+        "smi2/phpclickhouse": "^0.16.10",
+        "doctrine/orm": "^2.5"
+    },
+    "require-dev": {
+
+    },
+    "authors": [
+        {
+            "name": "Informika",
+            "email": "informika@service.com",
+            "homepage": "http://yandex.ru/asd"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "InformikaClickHouse": "src"
+        }
+    }
+}
