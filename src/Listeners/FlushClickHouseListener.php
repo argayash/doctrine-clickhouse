@@ -69,7 +69,7 @@ class FlushClickHouseListener
                 /** @var Column $column */
                 foreach ($chMetadata->getColumns() as $column) {
                     $columns[] = $column->name;
-                    $row[$column->name] = isset($entityData[$column->getProperty()]) ? $entityData[$column->getProperty()] : null;
+                    $row[$column->name] = isset($entityData[$column->getPropertyName()]) ? $entityData[$column->getPropertyName()] : null;
                 }
                 $chInsertOperation->addRow($row);
                 throw new AnnotationReaderException('Find CH annotations for entity ' . get_class($entity) . '. Table: ' . $chMetadata->getTable()->name . '. Columns: ' . implode(', ', $columns));
