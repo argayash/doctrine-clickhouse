@@ -1,5 +1,5 @@
 <?php
-namespace InformikaClickHouse\Driver;
+namespace InformikaDoctrineClickHouse\Driver;
 
 
 use Doctrine\DBAL\Connection;

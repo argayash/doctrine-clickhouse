@@ -1,8 +1,8 @@
 <?php
 
-namespace InformikaClickHouse\Mapping;
+namespace InformikaDoctrineClickHouse\Mapping;
 
-use InformikaClickHouse\Mapping\Annotation\Table;
+use InformikaDoctrineClickHouse\Mapping\Annotation\Table;
 
 /**
  * This class contains entity class metadata.
@@ -15,7 +15,7 @@ class ClassMetadata
     private $table;
 
     /**
-     * @var \InformikaClickHouse\Mapping\Annotation\Column[]
+     * @var \InformikaDoctrineClickHouse\Mapping\Annotation\Column[]
      */
     private $columns = [];
 
@@ -38,7 +38,7 @@ class ClassMetadata
     }
 
     /**
-     * @return \InformikaClickHouse\Mapping\Annotation\Column[]
+     * @return \InformikaDoctrineClickHouse\Mapping\Annotation\Column[]
      */
     public function getColumns()
     {

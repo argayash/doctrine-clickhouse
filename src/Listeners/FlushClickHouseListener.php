@@ -1,17 +1,18 @@
 <?php
-namespace InformikaClickHouse\Listeners;
+namespace InformikaDoctrineClickHouse\Listeners;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use InformikaClickHouse\ChOperations\ChInsertOperation;
-use InformikaClickHouse\Exception\AnnotationReaderException;
-use InformikaClickHouse\Managers\ClickHouseClientManager;
-use InformikaClickHouse\Mapping\Annotation\Column;
-use InformikaClickHouse\Mapping\ClassMetadataFactory;
-use InformikaClickHouse\Mapping\ClassMetadata;
+use InformikaDoctrineClickHouse\ChOperations\ChInsertOperation;
+use InformikaDoctrineClickHouse\ChRows\ChBaseRow;
+use InformikaDoctrineClickHouse\Exception\AnnotationReaderException;
+use InformikaDoctrineClickHouse\Managers\ClickHouseClientManager;
+use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
+use InformikaDoctrineClickHouse\Mapping\ClassMetadataFactory;
+use InformikaDoctrineClickHouse\Mapping\ClassMetadata;
 
 /**
  * Class FlushClickHouseListener
- * @package InformikaClickHouse\Listeners
+ * @package InformikaDoctrineClickHouse\Listeners
  */
 class FlushClickHouseListener
 {
@@ -55,19 +56,20 @@ class FlushClickHouseListener
                 $chTableName = $chMetadata->getTable()->name;
                 if (!isset($chInsertOperations[$chTableName])) {
                     $chInsertOperation = new ChInsertOperation($chClient);
-                    $chInsertOperation->setTable($chTableName);
+                    $chInsertOperation->setTable($chMetadata->getTable());
                     $chInsertOperations[$chTableName] = $chInsertOperation;
                 } else {
                     /** @var ChInsertOperation $chInsertOperation */
                     $chInsertOperation = $chInsertOperations[$chTableName];
                 }
                 $entityData = $uow->getOriginalEntityData($entity);
+                $chInsertRow = new ChBaseRow();
                 $row = [];
                 $columns = [];
                 /** @var Column $column */
                 foreach ($chMetadata->getColumns() as $column) {
                     $columns[] = $column->name;
-                    $row[$column->name] = isset($entityData[$column->getProperty()]) ? $entityData[$column->getProperty()] : null;
+                    $row[$column->name] = isset($entityData[$column->getPropertyName()]) ? $entityData[$column->getPropertyName()] : null;
                 }
                 $chInsertOperation->addRow($row);
                 throw new AnnotationReaderException('Find CH annotations for entity ' . get_class($entity) . '. Table: ' . $chMetadata->getTable()->name . '. Columns: ' . implode(', ', $columns));

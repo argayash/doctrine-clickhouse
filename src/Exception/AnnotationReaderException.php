@@ -1,5 +1,5 @@
 <?php
-namespace InformikaClickHouse\Exception;
+namespace InformikaDoctrineClickHouse\Exception;
 
 
 class AnnotationReaderException extends \Exception

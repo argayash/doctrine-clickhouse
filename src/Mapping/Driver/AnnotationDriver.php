@@ -1,12 +1,12 @@
 <?php
 
-namespace InformikaClickHouse\Mapping\Driver;
+namespace InformikaDoctrineClickHouse\Mapping\Driver;
 
 use Doctrine\Common\Annotations\Reader;
-use InformikaClickHouse\Exception\AnnotationReaderException;
-use InformikaClickHouse\Mapping\ClassMetadata;
-use InformikaClickHouse\Mapping\Annotation\Table;
-use InformikaClickHouse\Mapping\Annotation\Column;
+use InformikaDoctrineClickHouse\Exception\AnnotationReaderException;
+use InformikaDoctrineClickHouse\Mapping\ClassMetadata;
+use InformikaDoctrineClickHouse\Mapping\Annotation\Table;
+use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 
 /**
  * This class provides method to load metadata from class annotations.
@@ -40,7 +40,7 @@ class AnnotationDriver implements DriverInterface
         foreach ($class->getProperties() as $property) {
             /** @var Column $fieldMetadata */
             if (!is_null($fieldMetadata = $this->reader->getPropertyAnnotation($property, Column::class))) {
-                $fieldMetadata->setProperty($property->getName());
+                $fieldMetadata->setPropertyName($property->getName());
                 $columnsMetadata[] = $fieldMetadata;
             }
         }
