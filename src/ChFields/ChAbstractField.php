@@ -4,6 +4,10 @@ namespace InformikaDoctrineClickHouse\ChFields;
 
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 
+/**
+ * Class ChAbstractField
+ * @package InformikaDoctrineClickHouse\ChFields
+ */
 abstract class ChAbstractField
 {
     protected $definedTypes = [
@@ -25,12 +29,19 @@ abstract class ChAbstractField
     /** @var  mixed */
     private $value;
 
+    /**
+     * ChAbstractField constructor.
+     * @param Column $column
+     * @param null $value
+     */
     public function __construct(Column $column, $value = null)
     {
         $this->setPropertyName($column->getPropertyName());
         $this->setName($column->name);
         $this->setType($column->type);
-        $this->setLength($column->length);
+        if ($column->length) {
+            $this->setLength($column->length);
+        }
         $this->setValue($value);
     }
 
