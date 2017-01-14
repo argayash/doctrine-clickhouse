@@ -40,7 +40,7 @@ class AnnotationDriver implements DriverInterface
         foreach ($class->getProperties() as $property) {
             /** @var Column $fieldMetadata */
             if (!is_null($fieldMetadata = $this->reader->getPropertyAnnotation($property, Column::class))) {
-                $fieldMetadata->setProperty($property->getName());
+                $fieldMetadata->setPropertyName($property->getName());
                 $columnsMetadata[] = $fieldMetadata;
             }
         }
