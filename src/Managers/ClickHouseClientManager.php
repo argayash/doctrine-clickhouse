@@ -1,5 +1,6 @@
 <?php
-namespace InformikaClickHouse\Managers;
+namespace InformikaDoctrineClickHouse\Managers;
+
 
 use ClickHouseDB\Client;
 

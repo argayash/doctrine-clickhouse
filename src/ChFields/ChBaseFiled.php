@@ -1,5 +1,5 @@
 <?php
-namespace InformikaClickHouse\ChFields;
+namespace InformikaDoctrineClickHouse\ChFields;
 
 class ChBaseFiled
 {

@@ -1,16 +1,26 @@
 <?php
-namespace InformikaClickHouse\ChRows;
+namespace InformikaDoctrineClickHouse\ChRows;
 
-use InformikaClickHouse\ChFields\ChBaseFiled;
+
+use InformikaDoctrineClickHouse\ChFields\ChBaseFiled;
 
 class ChBaseRow
 {
     /** @var ChBaseFiled[] */
     private $fields = [];
 
+    /**
+     * @return array
+     */
     public function getDataArray()
     {
+        $data = [];
+        /** @var ChBaseFiled $field */
+        foreach ($this->getFields() as $field) {
+            $data[] = $field->getValue();
+        }
 
+        return $data;
     }
 
     /**

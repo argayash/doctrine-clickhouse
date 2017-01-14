@@ -1,10 +1,10 @@
 <?php
-namespace InformikaClickHouse\ChOperations;
+namespace InformikaDoctrineClickHouse\ChOperations;
 
 
 use ClickHouseDB\Client;
-use InformikaClickHouse\Mapping\Annotation\Column;
-use InformikaClickHouse\Mapping\Annotation\Table;
+use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
+use InformikaDoctrineClickHouse\Mapping\Annotation\Table;
 
 abstract class ChAbstractOperation
 {

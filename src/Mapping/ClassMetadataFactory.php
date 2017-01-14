@@ -1,7 +1,7 @@
 <?php
-namespace InformikaClickHouse\Mapping;
+namespace InformikaDoctrineClickHouse\Mapping;
 
-use InformikaClickHouse\Mapping\Driver\DriverInterface;
+use InformikaDoctrineClickHouse\Mapping\Driver\DriverInterface;
 
 /**
  * This class provides method to load entity class metadata.

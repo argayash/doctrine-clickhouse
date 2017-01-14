@@ -1,6 +1,6 @@
 <?php
 
-namespace InformikaClickHouse\Mapping\Annotation;
+namespace InformikaDoctrineClickHouse\Mapping\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
 

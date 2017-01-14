@@ -1,18 +1,18 @@
 <?php
-namespace InformikaClickHouse\Listeners;
+namespace InformikaDoctrineClickHouse\Listeners;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use InformikaClickHouse\ChOperations\ChInsertOperation;
-use InformikaClickHouse\ChRows\ChBaseRow;
-use InformikaClickHouse\Exception\AnnotationReaderException;
-use InformikaClickHouse\Managers\ClickHouseClientManager;
-use InformikaClickHouse\Mapping\Annotation\Column;
-use InformikaClickHouse\Mapping\ClassMetadataFactory;
-use InformikaClickHouse\Mapping\ClassMetadata;
+use InformikaDoctrineClickHouse\ChOperations\ChInsertOperation;
+use InformikaDoctrineClickHouse\ChRows\ChBaseRow;
+use InformikaDoctrineClickHouse\Exception\AnnotationReaderException;
+use InformikaDoctrineClickHouse\Managers\ClickHouseClientManager;
+use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
+use InformikaDoctrineClickHouse\Mapping\ClassMetadataFactory;
+use InformikaDoctrineClickHouse\Mapping\ClassMetadata;
 
 /**
  * Class FlushClickHouseListener
- * @package InformikaClickHouse\Listeners
+ * @package InformikaDoctrineClickHouse\Listeners
  */
 class FlushClickHouseListener
 {
