@@ -134,11 +134,20 @@ abstract class ChAbstractField
     }
 
     /**
-     * @return mixed
+     * @return int|mixed
+     * @throws \Exception
      */
     public function getFormattedValue()
     {
-        return $this->getValue();
+        $value = $this->getValue();
+        if (is_object($value)) {
+            if ($value instanceof \DateTime) {
+                $value = $value->getTimestamp();
+            } else {
+                throw new \Exception($this->getName() . ' it is not scalar value');
+            }
+        }
+        return $value;
     }
 
     /**
