@@ -3,6 +3,7 @@ namespace InformikaDoctrineClickHouse\ChOperations;
 
 
 use ClickHouseDB\Client;
+use InformikaDoctrineClickHouse\ChRows\ChAbstractRow;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Table;
 
@@ -12,7 +13,7 @@ abstract class ChAbstractOperation
     protected $name;
     /** @var  Table */
     protected $table;
-    /** @var array */
+    /** @var ChAbstractRow[] */
     protected $rows = [];
     /** @var Column[] */
     protected $columns = [];
@@ -48,9 +49,9 @@ abstract class ChAbstractOperation
     }
 
     /**
-     * @param array $row
+     * @param ChAbstractRow $row
      */
-    public function addRow(array $row)
+    public function addRow(ChAbstractRow $row)
     {
         $this->rows[] = $row;
     }

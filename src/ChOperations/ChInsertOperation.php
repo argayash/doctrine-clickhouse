@@ -3,6 +3,7 @@ namespace InformikaDoctrineClickHouse\ChOperations;
 
 
 use ClickHouseDB\Client;
+use InformikaDoctrineClickHouse\ChRows\ChAbstractRow;
 
 /**
  * Class ChInsertOperation
@@ -11,6 +12,9 @@ use ClickHouseDB\Client;
 class ChInsertOperation extends ChAbstractOperation
 {
     const OPERATION_NAME = 'insert';
+
+    private $insertData = [];
+    private $insertColumn = [];
 
     /**
      * ChInsertOperation constructor.
@@ -23,13 +27,36 @@ class ChInsertOperation extends ChAbstractOperation
         $this->setName(self::OPERATION_NAME);
     }
 
+    /**
+     * Prepare data for insert in to ClickHouse
+     */
     public function prepare()
     {
-        // TODO: Implement prepare() method.
+        $this->insertData = [];
+        $this->insertColumn = [];
+
+        if ($chRows = $this->getRows()) {
+            /** @var ChAbstractRow $row */
+            foreach ($chRows as $row) {
+                $this->insertData[] = $row->getDataArray();
+            }
+            /** @var ChAbstractRow $anyRow */
+            $anyRow = current($chRows);
+            $this->insertColumn = $anyRow->getColumnArray();
+        }
     }
 
+    /**
+     * @return \ClickHouseDB\Statement
+     * @throws \Exception
+     */
     public function execute()
     {
-        // TODO: Implement execute() method.
+        $chClient = $this->getChClient();
+        if (!empty($this->insertData)) {
+            return $chClient->insert($this->getTable()->name, $this->insertData, $this->insertColumn);
+        } else {
+            throw new \Exception('Insert data is empty');
+        }
     }
 }

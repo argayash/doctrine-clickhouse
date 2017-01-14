@@ -35,7 +35,6 @@ class Column
 
     /** @var  string */
     private $propertyName;
-
     /**
      * @return string
      */

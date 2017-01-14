@@ -2,6 +2,7 @@
 namespace InformikaDoctrineClickHouse\Listeners;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use InformikaDoctrineClickHouse\ChFields\ChBaseFiled;
 use InformikaDoctrineClickHouse\ChOperations\ChInsertOperation;
 use InformikaDoctrineClickHouse\ChRows\ChBaseRow;
 use InformikaDoctrineClickHouse\Exception\AnnotationReaderException;
@@ -64,15 +65,11 @@ class FlushClickHouseListener
                 }
                 $entityData = $uow->getOriginalEntityData($entity);
                 $chInsertRow = new ChBaseRow();
-                $row = [];
-                $columns = [];
                 /** @var Column $column */
                 foreach ($chMetadata->getColumns() as $column) {
-                    $columns[] = $column->name;
-                    $row[$column->name] = isset($entityData[$column->getPropertyName()]) ? $entityData[$column->getPropertyName()] : null;
+                    $chInsertRow->addField(new ChBaseFiled($column, isset($entityData[$column->getPropertyName()]) ? $entityData[$column->getPropertyName()] : null));
                 }
-                $chInsertOperation->addRow($row);
-                throw new AnnotationReaderException('Find CH annotations for entity ' . get_class($entity) . '. Table: ' . $chMetadata->getTable()->name . '. Columns: ' . implode(', ', $columns));
+                $chInsertOperation->addRow($chInsertRow);
             }
         }
 
