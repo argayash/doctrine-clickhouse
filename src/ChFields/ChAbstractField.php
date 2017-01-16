@@ -2,6 +2,7 @@
 namespace InformikaDoctrineClickHouse\ChFields;
 
 
+use InformikaDoctrineClickHouse\ChTypes\ChTypeInterface;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 
 /**
@@ -16,6 +17,7 @@ abstract class ChAbstractField
         'String', 'FixedString',
         'Date', 'DateTime',
         'Enum8', 'Enum16',
+        'Boolean',
     ];
 
     /** @var  string */
@@ -24,6 +26,8 @@ abstract class ChAbstractField
     private $name;
     /** @var  string */
     private $type;
+    /** @var  ChTypeInterface */
+    private $chType;
     /** @var  int */
     private $length;
     /** @var  mixed */
@@ -94,6 +98,8 @@ abstract class ChAbstractField
         if (!in_array($type, $this->getDefinedTypes())) {
             throw new \Exception('Undefined ClickHouse type `' . $type . '`');
         }
+        $chTypeClassName = '\InformikaDoctrineClickHouse\ChTypes\ChType' . $type;
+        $this->setChType(new $chTypeClassName);
         $this->type = $type;
     }
 
@@ -111,7 +117,7 @@ abstract class ChAbstractField
      */
     public function setLength(int $length)
     {
-        if($length<0){
+        if ($length < 0) {
             throw new \Exception('Length value must be ');
         }
         $this->length = $length;
@@ -139,15 +145,7 @@ abstract class ChAbstractField
      */
     public function getFormattedValue()
     {
-        $value = $this->getValue();
-        if (is_object($value)) {
-            if ($value instanceof \DateTime) {
-                $value = $value->getTimestamp();
-            } else {
-                throw new \Exception($this->getName() . ' it is not scalar value');
-            }
-        }
-        return $value;
+        return $this->getChType()->getFormatValue($this->getValue());
     }
 
     /**
@@ -164,5 +162,21 @@ abstract class ChAbstractField
     public function setDefinedTypes(array $definedTypes)
     {
         $this->definedTypes = $definedTypes;
+    }
+
+    /**
+     * @return ChTypeInterface
+     */
+    public function getChType(): ChTypeInterface
+    {
+        return $this->chType;
+    }
+
+    /**
+     * @param ChTypeInterface $chType
+     */
+    public function setChType(ChTypeInterface $chType)
+    {
+        $this->chType = $chType;
     }
 }
