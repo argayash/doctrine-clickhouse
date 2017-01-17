@@ -7,10 +7,8 @@ use InformikaDoctrineClickHouse\ChRows\ChAbstractRow;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Table;
 
-abstract class ChAbstractOperation
+abstract class ChAbstractOperation implements ChOperationInterface
 {
-    /** @var  string */
-    protected $name;
     /** @var  Table */
     protected $table;
     /** @var ChAbstractRow[] */
@@ -31,16 +29,6 @@ abstract class ChAbstractOperation
     }
 
     /**
-     * @return bool
-     */
-    abstract public function prepare();
-
-    /**
-     * @return bool
-     */
-    abstract public function execute();
-
-    /**
      * @param Column $column
      */
     public function addColumn(Column $column)
@@ -54,22 +42,6 @@ abstract class ChAbstractOperation
     public function addRow(ChAbstractRow $row)
     {
         $this->rows[] = $row;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
     }
 
     /**

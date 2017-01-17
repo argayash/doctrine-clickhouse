@@ -1,25 +1,47 @@
 <?php
 namespace InformikaDoctrineClickHouse\ChTypes;
 
+
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
+
 /**
  * Class ChTypeDateTime
  * Дата-с-временем. Хранится в 4 байтах, в виде (беззнакового) unix timestamp.
  *
  * @package InformikaDoctrineClickHouse\ChTypes
  */
-class ChTypeDateTime implements ChTypeInterface
+class ChTypeDateTime extends Type implements ChTypeInterface
 {
-    public function getTypeName(): string
+    /**
+     * @return string
+     */
+    public function getName()
     {
         return 'DateTime';
     }
 
+    /**
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
+     */
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    {
+        return $platform->getDateTimeTypeDeclarationSQL($fieldDeclaration);
+    }
+
+    /**
+     * @param null $value
+     * @return int
+     * @throws \Exception
+     */
     public function getFormatValue($value = null)
     {
         if ($value instanceof \DateTime) {
             $value = $value->getTimestamp();
         } else {
-            throw new \Exception('Type of value not is correct ' . $this->getTypeName());
+            throw new \Exception('Type of value not is correct ' . $this->getName());
         }
 
         return (int)$value;

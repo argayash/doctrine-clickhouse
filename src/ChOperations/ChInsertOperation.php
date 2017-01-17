@@ -23,12 +23,19 @@ class ChInsertOperation extends ChAbstractOperation
     public function __construct(Client $client)
     {
         parent::__construct($client);
+    }
 
-        $this->setName(self::OPERATION_NAME);
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return self::OPERATION_NAME;
     }
 
     /**
      * Prepare data for insert in to ClickHouse
+     * @return $this;
      */
     public function prepare()
     {
@@ -44,6 +51,8 @@ class ChInsertOperation extends ChAbstractOperation
             $anyRow = current($chRows);
             $this->insertColumn = $anyRow->getColumnArray();
         }
+
+        return $this;
     }
 
     /**

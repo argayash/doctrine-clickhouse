@@ -11,14 +11,23 @@ use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
  */
 abstract class ChAbstractField
 {
-    protected $definedTypes = [
-        'UInt8', 'UInt16', 'UInt32', 'UInt64', 'Int8', 'Int16', 'Int32', 'Int64',
-        'Float32', 'Float64',
-        'String', 'FixedString',
-        'Date', 'DateTime',
-        'Enum8', 'Enum16',
-        'Boolean',
-    ];
+    protected $definedTypes = [];
+
+    const TYPE_UINT8 = 'UInt8';
+    const TYPE_UINT16 = 'UInt16';
+    const TYPE_UINT32 = 'UInt32';
+    const TYPE_UINT64 = 'UInt64';
+    const TYPE_INT8 = 'Int8';
+    const TYPE_INT16 = 'Int16';
+    const TYPE_INT32 = 'Int32';
+    const TYPE_INT64 = 'Int64';
+    const TYPE_FLOAT32 = 'Float32';
+    const TYPE_FLOAT64 = 'Float64';
+    const TYPE_STRING = 'String';
+    const TYPE_FIXED_STRING = 'FixedString';
+    const TYPE_DATE = 'Date';
+    const TYPE_DATE_TIME = 'DateTime';
+    const TYPE_BOOLEAN = 'Boolean';
 
     /** @var  string */
     private $propertyName;
@@ -40,6 +49,24 @@ abstract class ChAbstractField
      */
     public function __construct(Column $column, $value = null)
     {
+        $this->setDefinedTypes([
+            self::TYPE_UINT8,
+            self::TYPE_UINT16,
+            self::TYPE_UINT32,
+            self::TYPE_UINT64,
+            self::TYPE_INT8,
+            self::TYPE_INT16,
+            self::TYPE_INT32,
+            self::TYPE_INT64,
+            self::TYPE_FLOAT32,
+            self::TYPE_FLOAT64,
+            self::TYPE_STRING,
+            self::TYPE_FIXED_STRING,
+            self::TYPE_DATE,
+            self::TYPE_DATE_TIME,
+            self::TYPE_BOOLEAN,
+        ]);
+
         $this->setPropertyName($column->getPropertyName());
         $this->setName($column->name);
         $this->setType($column->type);

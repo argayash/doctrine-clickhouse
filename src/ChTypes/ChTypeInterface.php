@@ -4,12 +4,6 @@ namespace InformikaDoctrineClickHouse\ChTypes;
 
 interface ChTypeInterface
 {
-    /** Get CH name of type
-     *
-     * @return string
-     */
-    public function getTypeName(): string;
-
     /**
      * Get formatted CH Value
      *

@@ -2,19 +2,44 @@
 namespace InformikaDoctrineClickHouse\ChTypes;
 
 
-class Int16 implements ChTypeInterface
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
+
+/**
+ * Class Int16
+ * @package InformikaDoctrineClickHouse\ChTypes
+ */
+class Int16 extends Type implements ChTypeInterface
 {
-    public function getTypeName(): string
+    /**
+     * @return string
+     */
+    public function getName()
     {
         return 'ChTypeInt16';
     }
 
+    /**
+     * @param array $fieldDeclaration
+     * @param AbstractPlatform $platform
+     * @return string
+     */
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    {
+        return $platform->getIntegerTypeDeclarationSQL($fieldDeclaration);
+    }
+
+    /**
+     * @param null $value
+     * @return int
+     * @throws \Exception
+     */
     public function getFormatValue($value = null)
     {
         if (is_int($value)) {
             return (int)$value;
         } else {
-            throw new \Exception('Type of value not is ' . $this->getTypeName());
+            throw new \Exception('Type of value not is ' . $this->getName());
         }
     }
 }
