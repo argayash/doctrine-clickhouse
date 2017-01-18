@@ -8,6 +8,7 @@ use InformikaDoctrineClickHouse\ChRows\ChBaseRow;
 use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 use InformikaDoctrineClickHouse\Exception\AnnotationReaderException;
 use InformikaDoctrineClickHouse\Managers\ClickHouseClientManager;
+use InformikaDoctrineClickHouse\Managers\ClickHouseConnectionManagerInterface;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 use InformikaDoctrineClickHouse\Mapping\ClassMetadataFactory;
 use InformikaDoctrineClickHouse\Mapping\ClassMetadata;
@@ -24,8 +25,8 @@ class FlushClickHouseListener
     /** @var  ClassMetadataFactory */
     private $classMetadataFactory;
 
-    /** @var  ClickHouseClientManager */
-    private $clickHouseClientManager;
+    /** @var  ClickHouseConnectionManagerInterface */
+    private $clickHouseConnectionClientManager;
 
     /** @var  Connection */
     private $connection;
@@ -33,14 +34,13 @@ class FlushClickHouseListener
     /**
      * FlushClickHouseListener constructor.
      * @param ClassMetadataFactory $classMetadataFactory
-     * @param ClickHouseClientManager $clickHouseClientManager
-     * @param Connection $connection
+     * @param ClickHouseConnectionManagerInterface $clickHouseConnectionManager
      */
-    public function __construct(ClassMetadataFactory $classMetadataFactory, ClickHouseClientManager $clickHouseClientManager, Connection $connection)
+    public function __construct(ClassMetadataFactory $classMetadataFactory, ClickHouseConnectionManagerInterface $clickHouseConnectionManager)
     {
         $this->setClassMetadataFactory($classMetadataFactory);
-        $this->setClickHouseClientManager($clickHouseClientManager);
-        $this->setConnection($connection);
+        $this->setClickHouseConnectionClientManager($clickHouseConnectionManager);
+        $this->setConnection($this->getClickHouseConnectionClientManager()->getConnection());
     }
 
     /**
@@ -135,19 +135,19 @@ class FlushClickHouseListener
     }
 
     /**
-     * @return ClickHouseClientManager
+     * @return ClickHouseConnectionManagerInterface
      */
-    public function getClickHouseClientManager()
+    public function getClickHouseConnectionClientManager()
     {
-        return $this->clickHouseClientManager;
+        return $this->clickHouseConnectionClientManager;
     }
 
     /**
-     * @param ClickHouseClientManager $clickHouseClientManager
+     * @param ClickHouseConnectionManagerInterface $clickHouseConnectionClientManager
      */
-    public function setClickHouseClientManager(ClickHouseClientManager $clickHouseClientManager)
+    public function setClickHouseConnectionClientManager($clickHouseConnectionClientManager)
     {
-        $this->clickHouseClientManager = $clickHouseClientManager;
+        $this->clickHouseConnectionClientManager = $clickHouseConnectionClientManager;
     }
 
     /**
