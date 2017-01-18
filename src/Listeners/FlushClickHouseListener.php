@@ -5,6 +5,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use InformikaDoctrineClickHouse\ChFields\ChBaseFiled;
 use InformikaDoctrineClickHouse\ChOperations\ChInsertOperation;
 use InformikaDoctrineClickHouse\ChRows\ChBaseRow;
+use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 use InformikaDoctrineClickHouse\Exception\AnnotationReaderException;
 use InformikaDoctrineClickHouse\Managers\ClickHouseClientManager;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
@@ -26,15 +27,20 @@ class FlushClickHouseListener
     /** @var  ClickHouseClientManager */
     private $clickHouseClientManager;
 
+    /** @var  Connection */
+    private $connection;
+
     /**
      * FlushClickHouseListener constructor.
      * @param ClassMetadataFactory $classMetadataFactory
      * @param ClickHouseClientManager $clickHouseClientManager
+     * @param Connection $connection
      */
-    public function __construct(ClassMetadataFactory $classMetadataFactory, ClickHouseClientManager $clickHouseClientManager)
+    public function __construct(ClassMetadataFactory $classMetadataFactory, ClickHouseClientManager $clickHouseClientManager, Connection $connection)
     {
         $this->setClassMetadataFactory($classMetadataFactory);
         $this->setClickHouseClientManager($clickHouseClientManager);
+        $this->setConnection($connection);
     }
 
     /**
@@ -48,7 +54,7 @@ class FlushClickHouseListener
 
         $chMetadataFactory = $this->getClassMetadataFactory();
 
-        $chClient = $this->getClickHouseClientManager()->getClient();
+        $connection = $this->getConnection();
 
         /** @var ChInsertOperation[] $chInsertOperations */
         $chInsertOperations = [];
@@ -56,7 +62,7 @@ class FlushClickHouseListener
             if ($chMetadata = $this->getEntityAnnotations($entity, $chMetadataFactory)) {
                 $chTableName = $chMetadata->getTable()->name;
                 if (!isset($chInsertOperations[$chTableName])) {
-                    $chInsertOperation = new ChInsertOperation($chClient);
+                    $chInsertOperation = new ChInsertOperation($connection);
                     $chInsertOperation->setTable($chMetadata->getTable());
                     $chInsertOperations[$chTableName] = $chInsertOperation;
                 } else {
@@ -131,7 +137,8 @@ class FlushClickHouseListener
     /**
      * @return ClickHouseClientManager
      */
-    public function getClickHouseClientManager()    {
+    public function getClickHouseClientManager()
+    {
         return $this->clickHouseClientManager;
     }
 
@@ -141,5 +148,21 @@ class FlushClickHouseListener
     public function setClickHouseClientManager(ClickHouseClientManager $clickHouseClientManager)
     {
         $this->clickHouseClientManager = $clickHouseClientManager;
+    }
+
+    /**
+     * @return Connection
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     * @param Connection $connection
+     */
+    public function setConnection($connection)
+    {
+        $this->connection = $connection;
     }
 }

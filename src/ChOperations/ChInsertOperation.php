@@ -2,8 +2,8 @@
 namespace InformikaDoctrineClickHouse\ChOperations;
 
 
-use ClickHouseDB\Client;
 use InformikaDoctrineClickHouse\ChRows\ChAbstractRow;
+use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 
 /**
  * Class ChInsertOperation
@@ -18,11 +18,11 @@ class ChInsertOperation extends ChAbstractOperation
 
     /**
      * ChInsertOperation constructor.
-     * @param Client $client
+     * @param Connection $connection
      */
-    public function __construct(Client $client)
+    public function __construct(Connection $connection)
     {
-        parent::__construct($client);
+        parent::__construct($connection);
     }
 
     /**
@@ -56,14 +56,14 @@ class ChInsertOperation extends ChAbstractOperation
     }
 
     /**
-     * @return \ClickHouseDB\Statement
+     * @return \InformikaDoctrineClickHouse\Driver\DBAL\Statement
      * @throws \Exception
      */
     public function execute()
     {
-        $chClient = $this->getChClient();
+        $connection = $this->getConnection();
         if (!empty($this->insertData)) {
-            return $chClient->insert($this->getTable()->name, $this->insertData, $this->insertColumn);
+            return $connection->insert($this->getTable()->name, $this->insertData, $this->insertColumn);
         } else {
             throw new \Exception('Insert data is empty');
         }

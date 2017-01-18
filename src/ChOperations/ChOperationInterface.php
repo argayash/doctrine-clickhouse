@@ -1,6 +1,6 @@
 <?php
-
 namespace InformikaDoctrineClickHouse\ChOperations;
+
 
 /**
  * Interface ChOperationInterface

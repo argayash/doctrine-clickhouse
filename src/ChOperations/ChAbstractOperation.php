@@ -2,8 +2,8 @@
 namespace InformikaDoctrineClickHouse\ChOperations;
 
 
-use ClickHouseDB\Client;
 use InformikaDoctrineClickHouse\ChRows\ChAbstractRow;
+use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Table;
 
@@ -16,16 +16,16 @@ abstract class ChAbstractOperation implements ChOperationInterface
     /** @var Column[] */
     protected $columns = [];
 
-    /** @var  Client */
-    private $chClient;
+    /** @var  Connection */
+    private $connection;
 
     /**
      * ChAbstractOperation constructor.
-     * @param Client $client
+     * @param Connection $connection
      */
-    public function __construct(Client $client)
+    public function __construct(Connection $connection)
     {
-        $this->setChClient($client);
+        $this->setConnection($connection);
     }
 
     /**
@@ -93,18 +93,18 @@ abstract class ChAbstractOperation implements ChOperationInterface
     }
 
     /**
-     * @return Client
+     * @return Connection
      */
-    public function getChClient()
+    public function getConnection()
     {
-        return $this->chClient;
+        return $this->connection;
     }
 
     /**
-     * @param Client $chClient
+     * @param Connection $connection
      */
-    public function setChClient(Client $chClient)
+    public function setConnection($connection)
     {
-        $this->chClient = $chClient;
+        $this->connection = $connection;
     }
 }
