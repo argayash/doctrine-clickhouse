@@ -82,7 +82,7 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
      * @param string $prepareString
      * @return Statement
      */
-    function prepare($prepareString)
+    public function prepare($prepareString)
     {
         return new Statement($this->getClient(), $prepareString);
     }
@@ -90,7 +90,7 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
     /**
      * @return Statement
      */
-    function query()
+    public function query()
     {
         $args = func_get_args();
         $sql = $args[0];
@@ -105,7 +105,7 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
      * @param int $type
      * @return string
      */
-    function quote($input, $type = \PDO::PARAM_STR)
+    public function quote($input, $type = \PDO::PARAM_STR)
     {
         return "'" . addslashes($input) . "'";
     }
@@ -114,7 +114,7 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
      * @param string $statement
      * @return int
      */
-    function exec($statement)
+    public function exec($statement)
     {
         $stmt = $this->query($statement);
         if (false === $stmt->execute()) {
@@ -130,7 +130,7 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
      * @param null $writeToFile
      * @return Statement
      */
-    function select($sql, $bindings = [], $whereInFile = null, $writeToFile = null)
+    public function select($sql, $bindings = [], $whereInFile = null, $writeToFile = null)
     {
         $selectStmt = $this->getClient()->select($sql, $bindings, $whereInFile, $writeToFile);
         $stmt = $this->query($selectStmt->sql());
@@ -145,7 +145,7 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
      * @param array $columns
      * @return Statement
      */
-    function insert($table, $values, $columns = [])
+    public function insert($table, $values, $columns = [])
     {
         $insertStmt = $this->getClient()->insert($table, $values, $columns);
         $stmt = $this->query($insertStmt->sql());
@@ -154,22 +154,22 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
         return $stmt;
     }
 
-    function lastInsertId($name = null)
+    public function lastInsertId($name = null)
     {
         throw new \RuntimeException("Unable to get last insert id in ClickHouse");
     }
 
-    function beginTransaction()
+    public function beginTransaction()
     {
         throw new \RuntimeException("Transactions are not allowed in ClickHouse");
     }
 
-    function commit()
+    public function commit()
     {
         throw new \RuntimeException("Transactions are not allowed in ClickHouse");
     }
 
-    function rollBack()
+    public function rollBack()
     {
         throw new \RuntimeException("Transactions are not allowed in ClickHouse");
     }
@@ -177,7 +177,7 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
     /**
      * @return int
      */
-    function errorCode()
+    public function errorCode()
     {
         return $this->getErrorCode();
     }
@@ -185,7 +185,7 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
     /**
      * @return string
      */
-    function errorInfo()
+    public function errorInfo()
     {
         return $this->getErrorInfo();
     }

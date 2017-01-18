@@ -166,7 +166,7 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     {
         $this->chStatement = $chStatement;
 
-        $this->values = $chStatement->rows();
+        $this->results = $chStatement->rows();
 
         return $this;
     }

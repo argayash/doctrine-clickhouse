@@ -17,6 +17,10 @@ class ClickHouseDriver implements Driver
     {
         if (!empty($this->connection)) return $this->connection;
 
+        if (isset($params['dbname'])) {
+            $params['database'] = $params['dbname'];
+        }
+
         $this->connection = new Connection($params, $username, $password, $driverOptions);
         return $this->connection;
     }
