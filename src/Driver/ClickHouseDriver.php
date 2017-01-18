@@ -6,6 +6,10 @@ use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use InformikaDoctrineClickHouse\Driver\DBAL\Platform\ClickHousePlatform;
 
+/**
+ * Class ClickHouseDriver
+ * @package InformikaDoctrineClickHouse\Driver\
+ */
 class ClickHouseDriver implements Driver
 {
     /**
@@ -13,6 +17,13 @@ class ClickHouseDriver implements Driver
      */
     private $connection;
 
+    /**
+     * @param array $params
+     * @param null $username
+     * @param null $password
+     * @param array $driverOptions
+     * @return Connection
+     */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         if (!empty($this->connection)) return $this->connection;
@@ -26,6 +37,9 @@ class ClickHouseDriver implements Driver
         return $this->getConnection();
     }
 
+    /**
+     * @return ClickHousePlatform
+     */
     public function getDatabasePlatform()
     {
         return new ClickHousePlatform();
@@ -36,11 +50,18 @@ class ClickHouseDriver implements Driver
 
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'clickhouse';
     }
 
+    /**
+     * @param \Doctrine\DBAL\Connection $conn
+     * @return string
+     */
     public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $connectionParams = $conn->getParams();
