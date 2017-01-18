@@ -2,11 +2,9 @@
 namespace InformikaDoctrineClickHouse\Driver;
 
 
-use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\Connection;
+use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 use Doctrine\DBAL\Driver;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\DBAL\Schema\MySqlSchemaManager;
+use InformikaDoctrineClickHouse\Driver\DBAL\Platform\ClickHousePlatform;
 
 class ClickHouseDriver implements Driver
 {
@@ -18,20 +16,19 @@ class ClickHouseDriver implements Driver
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         if (!empty($this->connection)) return $this->connection;
-        $config = new Configuration();
 
-        $this->connection = new Connection($params, $this, $config);
+        $this->connection = new Connection($params, $username, $password, $driverOptions);
         return $this->connection;
     }
 
     public function getDatabasePlatform()
     {
-        return new MySqlPlatform();
+        return new ClickHousePlatform();
     }
 
-    public function getSchemaManager(Connection $conn)
+    public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
-        return new MySqlSchemaManager($conn);
+
     }
 
     public function getName()
@@ -39,7 +36,7 @@ class ClickHouseDriver implements Driver
         return 'clickhouse';
     }
 
-    public function getDatabase(Connection $conn)
+    public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $connectionParams = $conn->getParams();
 

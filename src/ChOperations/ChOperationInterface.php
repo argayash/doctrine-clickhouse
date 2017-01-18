@@ -12,7 +12,7 @@ interface ChOperationInterface
      * Get operation name
      * @return string
      */
-    public function getName(): string;
+    public function getName();
 
     /**
      * @return ChOperationInterface

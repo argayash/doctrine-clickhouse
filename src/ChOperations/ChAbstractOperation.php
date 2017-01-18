@@ -47,7 +47,7 @@ abstract class ChAbstractOperation implements ChOperationInterface
     /**
      * @return Table
      */
-    public function getTable(): Table
+    public function getTable()
     {
         return $this->table;
     }
@@ -63,7 +63,7 @@ abstract class ChAbstractOperation implements ChOperationInterface
     /**
      * @return array
      */
-    public function getRows(): array
+    public function getRows()
     {
         return $this->rows;
     }
@@ -79,7 +79,7 @@ abstract class ChAbstractOperation implements ChOperationInterface
     /**
      * @return array
      */
-    public function getColumns(): array
+    public function getColumns()
     {
         return $this->columns;
     }
@@ -95,7 +95,7 @@ abstract class ChAbstractOperation implements ChOperationInterface
     /**
      * @return Client
      */
-    public function getChClient(): Client
+    public function getChClient()
     {
         return $this->chClient;
     }

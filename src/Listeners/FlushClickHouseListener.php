@@ -115,7 +115,7 @@ class FlushClickHouseListener
     /**
      * @return ClassMetadataFactory
      */
-    public function getClassMetadataFactory(): ClassMetadataFactory
+    public function getClassMetadataFactory()
     {
         return $this->classMetadataFactory;
     }
@@ -131,8 +131,7 @@ class FlushClickHouseListener
     /**
      * @return ClickHouseClientManager
      */
-    public function getClickHouseClientManager(): ClickHouseClientManager
-    {
+    public function getClickHouseClientManager()    {
         return $this->clickHouseClientManager;
     }
 

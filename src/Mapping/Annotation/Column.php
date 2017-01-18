@@ -38,7 +38,7 @@ class Column
     /**
      * @return string
      */
-    public function getPropertyName(): string
+    public function getPropertyName()
     {
         return $this->propertyName;
     }
@@ -46,7 +46,7 @@ class Column
     /**
      * @param string $propertyName
      */
-    public function setPropertyName(string $propertyName)
+    public function setPropertyName($propertyName)
     {
         $this->propertyName = $propertyName;
     }

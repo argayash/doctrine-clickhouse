@@ -23,7 +23,7 @@ class ClickHouseClientManager
      * @param string $password
      * @param array $settings
      */
-    public function __construct(string $host = '127.0.0.1', int $port = 8123, string $username = 'default', string $password = '', array $settings = [])
+    public function __construct($host = '127.0.0.1', $port = 8123, $username = 'default', $password = '', array $settings = [])
     {
         $config = [
             'host' => $host,
@@ -39,7 +39,7 @@ class ClickHouseClientManager
     /**
      * @return array
      */
-    public function getConfig(): array
+    public function getConfig()
     {
         return $this->config;
     }
@@ -55,7 +55,7 @@ class ClickHouseClientManager
     /**
      * @return Client
      */
-    public function getClient(): Client
+    public function getClient()
     {
         $this->client = new Client($this->getConfig());
 

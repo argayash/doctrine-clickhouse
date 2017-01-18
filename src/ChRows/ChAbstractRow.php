@@ -45,7 +45,7 @@ abstract class ChAbstractRow
     /**
      * @return ChBaseFiled[]
      */
-    public function getFields(): array
+    public function getFields()
     {
         return $this->fields;
     }

@@ -79,7 +79,7 @@ abstract class ChAbstractField
     /**
      * @return string
      */
-    public function getPropertyName(): string
+    public function getPropertyName()
     {
         return $this->propertyName;
     }
@@ -87,7 +87,7 @@ abstract class ChAbstractField
     /**
      * @param string $propertyName
      */
-    public function setPropertyName(string $propertyName)
+    public function setPropertyName($propertyName)
     {
         $this->propertyName = $propertyName;
     }
@@ -95,7 +95,7 @@ abstract class ChAbstractField
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -103,7 +103,7 @@ abstract class ChAbstractField
     /**
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -111,7 +111,7 @@ abstract class ChAbstractField
     /**
      * @return string
      */
-    public function getType(): string
+    public function getType()
     {
         return $this->type;
     }
@@ -120,7 +120,7 @@ abstract class ChAbstractField
      * @param string $type
      * @throws \Exception
      */
-    public function setType(string $type)
+    public function setType($type)
     {
         if (!in_array($type, $this->getDefinedTypes())) {
             throw new \Exception('Undefined ClickHouse type `' . $type . '`');
@@ -142,7 +142,7 @@ abstract class ChAbstractField
      * @param int $length
      * @throws \Exception
      */
-    public function setLength(int $length)
+    public function setLength($length)
     {
         if ($length < 0) {
             throw new \Exception('Length value must be ');
@@ -178,7 +178,7 @@ abstract class ChAbstractField
     /**
      * @return array
      */
-    public function getDefinedTypes(): array
+    public function getDefinedTypes()
     {
         return $this->definedTypes;
     }
@@ -194,7 +194,7 @@ abstract class ChAbstractField
     /**
      * @return ChTypeInterface
      */
-    public function getChType(): ChTypeInterface
+    public function getChType()
     {
         return $this->chType;
     }
