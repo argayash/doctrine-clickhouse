@@ -2,14 +2,11 @@
 namespace InformikaDoctrineClickHouse\ChTypes;
 
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
-
 /**
  * Class ChTypeFloat32
  * @package InformikaDoctrineClickHouse\ChTypes
  */
-class ChTypeFloat32 extends Type implements ChTypeInterface
+class ChTypeFloat32 implements ChTypeInterface
 {
     /**
      * @return string
@@ -17,16 +14,6 @@ class ChTypeFloat32 extends Type implements ChTypeInterface
     public function getName()
     {
         return 'Float32';
-    }
-
-    /**
-     * @param array $fieldDeclaration
-     * @param AbstractPlatform $platform
-     * @return string
-     */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-    {
-        return $platform->getFloatDeclarationSQL($fieldDeclaration);
     }
 
     /**

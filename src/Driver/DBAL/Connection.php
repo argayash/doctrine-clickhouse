@@ -61,7 +61,9 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
         $this->setPort(isset($params['port']) ? (int)$params['port'] : 0);
         $this->setUsername($username);
         $this->setPassword($password);
-        $this->setParams($params);
+        $this->setParams([
+            'database' => isset($params['database']) ? $params['database'] : null,
+        ]);
 
         $config = [
             'host' => $this->getHost(),
@@ -307,10 +309,6 @@ class Connection implements \Doctrine\DBAL\Driver\Connection
      */
     public function setPassword($password)
     {
-        if (!$password) {
-            throw new ConnectionException('Password must be not empty');
-        }
-
         $this->password = $password;
 
         return $this;

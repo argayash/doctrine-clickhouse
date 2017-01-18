@@ -2,14 +2,11 @@
 namespace InformikaDoctrineClickHouse\ChTypes;
 
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
-
 /**
  * Class ChTypeInt32
  * @package InformikaDoctrineClickHouse\ChTypes
  */
-class ChTypeInt32 extends Type implements ChTypeInterface
+class ChTypeInt32 implements ChTypeInterface
 {
     /**
      * @return string
@@ -17,16 +14,6 @@ class ChTypeInt32 extends Type implements ChTypeInterface
     public function getName()
     {
         return 'Int32';
-    }
-
-    /**
-     * @param array $fieldDeclaration
-     * @param AbstractPlatform $platform
-     * @return string
-     */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-    {
-        return $platform->getIntegerTypeDeclarationSQL($fieldDeclaration);
     }
 
     /**

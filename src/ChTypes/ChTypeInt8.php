@@ -1,13 +1,13 @@
 <?php
 namespace InformikaDoctrineClickHouse\ChTypes;
 
-
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
-
-class ChTypeInt8 extends Type implements ChTypeInterface
+/**
+ * Class ChTypeInt8
+ * @package InformikaDoctrineClickHouse\ChTypes
+ */
+class ChTypeInt8 implements ChTypeInterface
 {
-    public function getTypeName(): string
+    public function getTypeName()
     {
         return 'Int8';
     }

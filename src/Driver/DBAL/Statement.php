@@ -4,7 +4,7 @@ namespace InformikaDoctrineClickHouse\Driver\DBAL;
 
 use ClickHouseDB\Client;
 
-class Statement implements \Doctrine\DBAL\Driver\Statement, \IteratorAggregate
+class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
 {
     /** @var  Client */
     private $client;

@@ -2,14 +2,11 @@
 namespace InformikaDoctrineClickHouse\ChTypes;
 
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
-
 /**
  * Class ChTypeString
  * @package InformikaDoctrineClickHouse\ChTypes
  */
-class ChTypeString extends Type implements ChTypeInterface
+class ChTypeString implements ChTypeInterface
 {
     /**
      * @return string
@@ -17,16 +14,6 @@ class ChTypeString extends Type implements ChTypeInterface
     public function getName()
     {
         return 'String';
-    }
-
-    /**
-     * @param array $fieldDeclaration
-     * @param AbstractPlatform $platform
-     * @return string
-     */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-    {
-        return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
     }
 
     /**

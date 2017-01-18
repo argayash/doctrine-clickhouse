@@ -2,14 +2,11 @@
 namespace InformikaDoctrineClickHouse\ChTypes;
 
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
-
 /**
  * Class ChTypeFloat64
  * @package InformikaDoctrineClickHouse\ChTypes
  */
-class ChTypeFloat64 extends Type implements ChTypeInterface
+class ChTypeFloat64 implements ChTypeInterface
 {
     /**
      * @return string
