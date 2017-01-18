@@ -2,42 +2,31 @@
 namespace InformikaDoctrineClickHouse\ChOperations;
 
 
-use ClickHouseDB\Client;
+use InformikaDoctrineClickHouse\ChRows\ChAbstractRow;
+use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Table;
 
-abstract class ChAbstractOperation
+abstract class ChAbstractOperation implements ChOperationInterface
 {
-    /** @var  string */
-    protected $name;
     /** @var  Table */
     protected $table;
-    /** @var array */
+    /** @var ChAbstractRow[] */
     protected $rows = [];
     /** @var Column[] */
     protected $columns = [];
 
-    /** @var  Client */
-    private $chClient;
+    /** @var  Connection */
+    private $connection;
 
     /**
      * ChAbstractOperation constructor.
-     * @param Client $client
+     * @param Connection $connection
      */
-    public function __construct(Client $client)
+    public function __construct(Connection $connection)
     {
-        $this->setChClient($client);
+        $this->setConnection($connection);
     }
-
-    /**
-     * @return bool
-     */
-    abstract public function prepare();
-
-    /**
-     * @return bool
-     */
-    abstract public function execute();
 
     /**
      * @param Column $column
@@ -48,33 +37,17 @@ abstract class ChAbstractOperation
     }
 
     /**
-     * @param array $row
+     * @param ChAbstractRow $row
      */
-    public function addRow(array $row)
+    public function addRow(ChAbstractRow $row)
     {
         $this->rows[] = $row;
     }
 
     /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @return Table
      */
-    public function getTable(): Table
+    public function getTable()
     {
         return $this->table;
     }
@@ -90,7 +63,7 @@ abstract class ChAbstractOperation
     /**
      * @return array
      */
-    public function getRows(): array
+    public function getRows()
     {
         return $this->rows;
     }
@@ -106,7 +79,7 @@ abstract class ChAbstractOperation
     /**
      * @return array
      */
-    public function getColumns(): array
+    public function getColumns()
     {
         return $this->columns;
     }
@@ -120,18 +93,18 @@ abstract class ChAbstractOperation
     }
 
     /**
-     * @return Client
+     * @return Connection
      */
-    public function getChClient(): Client
+    public function getConnection()
     {
-        return $this->chClient;
+        return $this->connection;
     }
 
     /**
-     * @param Client $chClient
+     * @param Connection $connection
      */
-    public function setChClient(Client $chClient)
+    public function setConnection($connection)
     {
-        $this->chClient = $chClient;
+        $this->connection = $connection;
     }
 }

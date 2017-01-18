@@ -2,7 +2,8 @@
 namespace InformikaDoctrineClickHouse\ChOperations;
 
 
-use ClickHouseDB\Client;
+use InformikaDoctrineClickHouse\ChRows\ChAbstractRow;
+use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 
 /**
  * Class ChInsertOperation
@@ -12,24 +13,59 @@ class ChInsertOperation extends ChAbstractOperation
 {
     const OPERATION_NAME = 'insert';
 
+    private $insertData = [];
+    private $insertColumn = [];
+
     /**
      * ChInsertOperation constructor.
-     * @param Client $client
+     * @param Connection $connection
      */
-    public function __construct(Client $client)
+    public function __construct(Connection $connection)
     {
-        parent::__construct($client);
-
-        $this->setName(self::OPERATION_NAME);
+        parent::__construct($connection);
     }
 
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return self::OPERATION_NAME;
+    }
+
+    /**
+     * Prepare data for insert in to ClickHouse
+     * @return $this;
+     */
     public function prepare()
     {
-        // TODO: Implement prepare() method.
+        $this->insertData = [];
+        $this->insertColumn = [];
+
+        if ($chRows = $this->getRows()) {
+            /** @var ChAbstractRow $row */
+            foreach ($chRows as $row) {
+                $this->insertData[] = $row->getDataArray();
+            }
+            /** @var ChAbstractRow $anyRow */
+            $anyRow = current($chRows);
+            $this->insertColumn = $anyRow->getColumnArray();
+        }
+
+        return $this;
     }
 
+    /**
+     * @return \InformikaDoctrineClickHouse\Driver\DBAL\Statement
+     * @throws \Exception
+     */
     public function execute()
     {
-        // TODO: Implement execute() method.
+        $connection = $this->getConnection();
+        if (!empty($this->insertData)) {
+            return $connection->insert($this->getTable()->name, $this->insertData, $this->insertColumn);
+        } else {
+            throw new \Exception('Insert data is empty');
+        }
     }
 }

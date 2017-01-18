@@ -2,10 +2,13 @@
 namespace InformikaDoctrineClickHouse\Listeners;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use InformikaDoctrineClickHouse\ChFields\ChBaseFiled;
 use InformikaDoctrineClickHouse\ChOperations\ChInsertOperation;
 use InformikaDoctrineClickHouse\ChRows\ChBaseRow;
+use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 use InformikaDoctrineClickHouse\Exception\AnnotationReaderException;
 use InformikaDoctrineClickHouse\Managers\ClickHouseClientManager;
+use InformikaDoctrineClickHouse\Managers\ClickHouseConnectionManagerInterface;
 use InformikaDoctrineClickHouse\Mapping\Annotation\Column;
 use InformikaDoctrineClickHouse\Mapping\ClassMetadataFactory;
 use InformikaDoctrineClickHouse\Mapping\ClassMetadata;
@@ -22,18 +25,22 @@ class FlushClickHouseListener
     /** @var  ClassMetadataFactory */
     private $classMetadataFactory;
 
-    /** @var  ClickHouseClientManager */
-    private $clickHouseClientManager;
+    /** @var  ClickHouseConnectionManagerInterface */
+    private $clickHouseConnectionClientManager;
+
+    /** @var  Connection */
+    private $connection;
 
     /**
      * FlushClickHouseListener constructor.
      * @param ClassMetadataFactory $classMetadataFactory
-     * @param ClickHouseClientManager $clickHouseClientManager
+     * @param ClickHouseConnectionManagerInterface $clickHouseConnectionManager
      */
-    public function __construct(ClassMetadataFactory $classMetadataFactory, ClickHouseClientManager $clickHouseClientManager)
+    public function __construct(ClassMetadataFactory $classMetadataFactory, ClickHouseConnectionManagerInterface $clickHouseConnectionManager)
     {
         $this->setClassMetadataFactory($classMetadataFactory);
-        $this->setClickHouseClientManager($clickHouseClientManager);
+        $this->setClickHouseConnectionClientManager($clickHouseConnectionManager);
+        $this->setConnection($this->getClickHouseConnectionClientManager()->getConnection());
     }
 
     /**
@@ -47,7 +54,7 @@ class FlushClickHouseListener
 
         $chMetadataFactory = $this->getClassMetadataFactory();
 
-        $chClient = $this->getClickHouseClientManager()->getClient();
+        $connection = $this->getConnection();
 
         /** @var ChInsertOperation[] $chInsertOperations */
         $chInsertOperations = [];
@@ -55,7 +62,7 @@ class FlushClickHouseListener
             if ($chMetadata = $this->getEntityAnnotations($entity, $chMetadataFactory)) {
                 $chTableName = $chMetadata->getTable()->name;
                 if (!isset($chInsertOperations[$chTableName])) {
-                    $chInsertOperation = new ChInsertOperation($chClient);
+                    $chInsertOperation = new ChInsertOperation($connection);
                     $chInsertOperation->setTable($chMetadata->getTable());
                     $chInsertOperations[$chTableName] = $chInsertOperation;
                 } else {
@@ -64,15 +71,11 @@ class FlushClickHouseListener
                 }
                 $entityData = $uow->getOriginalEntityData($entity);
                 $chInsertRow = new ChBaseRow();
-                $row = [];
-                $columns = [];
                 /** @var Column $column */
                 foreach ($chMetadata->getColumns() as $column) {
-                    $columns[] = $column->name;
-                    $row[$column->name] = isset($entityData[$column->getPropertyName()]) ? $entityData[$column->getPropertyName()] : null;
+                    $chInsertRow->addField(new ChBaseFiled($column, isset($entityData[$column->getPropertyName()]) ? $entityData[$column->getPropertyName()] : null));
                 }
-                $chInsertOperation->addRow($row);
-                throw new AnnotationReaderException('Find CH annotations for entity ' . get_class($entity) . '. Table: ' . $chMetadata->getTable()->name . '. Columns: ' . implode(', ', $columns));
+                $chInsertOperation->addRow($chInsertRow);
             }
         }
 
@@ -118,7 +121,7 @@ class FlushClickHouseListener
     /**
      * @return ClassMetadataFactory
      */
-    public function getClassMetadataFactory(): ClassMetadataFactory
+    public function getClassMetadataFactory()
     {
         return $this->classMetadataFactory;
     }
@@ -132,18 +135,34 @@ class FlushClickHouseListener
     }
 
     /**
-     * @return ClickHouseClientManager
+     * @return ClickHouseConnectionManagerInterface
      */
-    public function getClickHouseClientManager(): ClickHouseClientManager
+    public function getClickHouseConnectionClientManager()
     {
-        return $this->clickHouseClientManager;
+        return $this->clickHouseConnectionClientManager;
     }
 
     /**
-     * @param ClickHouseClientManager $clickHouseClientManager
+     * @param ClickHouseConnectionManagerInterface $clickHouseConnectionClientManager
      */
-    public function setClickHouseClientManager(ClickHouseClientManager $clickHouseClientManager)
+    public function setClickHouseConnectionClientManager($clickHouseConnectionClientManager)
     {
-        $this->clickHouseClientManager = $clickHouseClientManager;
+        $this->clickHouseConnectionClientManager = $clickHouseConnectionClientManager;
+    }
+
+    /**
+     * @return Connection
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     * @param Connection $connection
+     */
+    public function setConnection($connection)
+    {
+        $this->connection = $connection;
     }
 }

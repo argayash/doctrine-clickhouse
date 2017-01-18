@@ -30,7 +30,7 @@ class ClassMetadataFactory
      * @param string $className
      * @return ClassMetadata|null
      */
-    public function loadMetadata(string $className)
+    public function loadMetadata($className)
     {
         $classMetadata = null;
 
