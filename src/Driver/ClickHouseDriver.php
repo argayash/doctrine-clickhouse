@@ -21,8 +21,9 @@ class ClickHouseDriver implements Driver
             $params['database'] = $params['dbname'];
         }
 
-        $this->connection = new Connection($params, $username, $password, $driverOptions);
-        return $this->connection;
+        $this->setConnection(new Connection($params, $username, $password, $driverOptions));
+
+        return $this->getConnection();
     }
 
     public function getDatabasePlatform()
@@ -47,4 +48,19 @@ class ClickHouseDriver implements Driver
         return isset($connectionParams['database']) ? $connectionParams['database'] : 'default';
     }
 
+    /**
+     * @return Connection
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     * @param Connection $connection
+     */
+    public function setConnection($connection)
+    {
+        $this->connection = $connection;
+    }
 }
