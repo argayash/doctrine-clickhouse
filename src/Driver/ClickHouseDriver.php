@@ -5,6 +5,7 @@ namespace InformikaDoctrineClickHouse\Driver;
 use InformikaDoctrineClickHouse\Driver\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use InformikaDoctrineClickHouse\Driver\DBAL\Platform\ClickHousePlatform;
+use InformikaDoctrineClickHouse\Driver\DBAL\Schema\ClickHouseSchemaManager;
 
 /**
  * Class ClickHouseDriver
@@ -16,6 +17,14 @@ class ClickHouseDriver implements Driver
      * @var Connection
      */
     private $connection;
+    /**
+     * @var  ClickHousePlatform
+     */
+    private $platform;
+    /**
+     * @var  ClickHouseSchemaManager
+     */
+    private $schema;
 
     /**
      * @param array $params
@@ -42,12 +51,24 @@ class ClickHouseDriver implements Driver
      */
     public function getDatabasePlatform()
     {
-        return new ClickHousePlatform();
+        if (!$this->getPlatform()) {
+            $this->setPlatform(new ClickHousePlatform());
+        }
+
+        return $this->getPlatform();
     }
 
+    /**
+     * @param \Doctrine\DBAL\Connection $conn
+     * @return ClickHouseSchemaManager
+     */
     public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
+        if (!$this->getSchema()) {
+            $this->setSchema(new ClickHouseSchemaManager($conn, $this->getDatabasePlatform()));
+        }
 
+        return $this->getSchema();
     }
 
     /**
@@ -83,5 +104,37 @@ class ClickHouseDriver implements Driver
     public function setConnection($connection)
     {
         $this->connection = $connection;
+    }
+
+    /**
+     * @return ClickHousePlatform
+     */
+    public function getPlatform()
+    {
+        return $this->platform;
+    }
+
+    /**
+     * @param ClickHousePlatform $platform
+     */
+    public function setPlatform($platform)
+    {
+        $this->platform = $platform;
+    }
+
+    /**
+     * @return ClickHouseSchemaManager
+     */
+    public function getSchema()
+    {
+        return $this->schema;
+    }
+
+    /**
+     * @param ClickHouseSchemaManager $schema
+     */
+    public function setSchema($schema)
+    {
+        $this->schema = $schema;
     }
 }
